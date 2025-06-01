@@ -11,8 +11,8 @@ export class TemperatureController {
 
     @UseGuards(AuthGuard)
     @Get()
-    async findAll() {
-        return await this.temperatureService.findAll();
+    async findAll(@Body() body) {
+        return await this.temperatureService.findAll(body.limit);
     }
 
     @UseGuards(NetworkGuard)
@@ -24,7 +24,7 @@ export class TemperatureController {
     @UseGuards(AuthGuard)
     @Post('/findByRoomAll')
     async findByRoomAll(@Body() body) {
-        return await this.temperatureService.findAllbyRoom(body.room);
+        return await this.temperatureService.findAllbyRoom(body.room, body.limit);
     }
 
     @UseGuards(AuthGuard)

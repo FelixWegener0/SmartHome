@@ -13,10 +13,11 @@ export class TemperatureService {
         private temperatureRepository: Repository<Temperature>,
     ) {}
 
-    async findAll(): Promise<TemperatureResponseDto[]> {
+    async findAll(limit?: number): Promise<TemperatureResponseDto[]> {
         return await this.temperatureRepository.find({
             where: {},
-            order: { createdAt: 'DESC' }
+            order: { createdAt: 'DESC' },
+            take: limit
         });
     }
 
@@ -32,10 +33,11 @@ export class TemperatureService {
         });
     }
 
-    async findAllbyRoom(room: string): Promise<TemperatureResponseDto[] | null> {
+    async findAllbyRoom(room: string, limit?: number): Promise<TemperatureResponseDto[] | null> {
         return await this.temperatureRepository.find({
             where: { room: room },
-            order: { createdAt: 'DESC' }
+            order: { createdAt: 'DESC' },
+            take: limit
         });
     }
 
@@ -67,7 +69,7 @@ export class TemperatureService {
     }
 
     async getAmountOfEntry(): Promise<number> {
-        return (await this.temperatureRepository.find()).length;
+        return await this.temperatureRepository.count();
     }
 
 }
