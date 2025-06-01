@@ -3,9 +3,13 @@ import { TemperatureService } from "./temperature.service";
 import { TemperatureCreateDto } from "./dto/temperature-create.dto";
 import { AuthGuard } from "src/core/auth/auth.guard";
 import { NetworkGuard } from "src/core/auth/network.guard";
+import {FirebaseMessaging} from "../messaging/messaging";
+import * as process from "node:process";
 
 @Controller('temp')
 export class TemperatureController {
+
+    private firebaseService = new FirebaseMessaging();
 
     constructor(private temperatureService: TemperatureService) {}
 
@@ -18,6 +22,10 @@ export class TemperatureController {
     @UseGuards(NetworkGuard)
     @Post()
     async create(@Body() createNew: TemperatureCreateDto) {
+        if (createNew.humidity > 60) {
+            this.firebaseService.sendMessage(createNew.room, createNew.humidity);
+        }
+
         return await this.temperatureService.create(createNew);
     }
 

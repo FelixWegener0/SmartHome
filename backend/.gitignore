@@ -35,6 +35,9 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
+# firebase
+/src/module/messaging/privateKey.json
+
 # dotenv environment variable files
 .env
 .env.development.local
