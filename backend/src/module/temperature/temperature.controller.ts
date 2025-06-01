@@ -11,8 +11,8 @@ export class TemperatureController {
 
     @UseGuards(AuthGuard)
     @Get()
-    async findAll(@Body() body) {
-        return await this.temperatureService.findAll(body.limit);
+    async findAll() {
+        return await this.temperatureService.findAll();
     }
 
     @UseGuards(NetworkGuard)
@@ -57,5 +57,11 @@ export class TemperatureController {
     @Get('/amount')
     async getAmountOfEntry() {
         return await this.temperatureService.getAmountOfEntry();
+    }
+
+    @UseGuards(AuthGuard)
+    @Get('/today')
+    async getTodaysData() {
+       return await this.temperatureService.getTodayData();
     }
 }
