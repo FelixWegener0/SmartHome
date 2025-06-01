@@ -58,4 +58,10 @@ export class TemperatureController {
     async getAmountOfEntry() {
         return await this.temperatureService.getAmountOfEntry();
     }
+
+    @UseGuards(AuthGuard)
+    @Get('/today')
+    async getTodaysData() {
+       return await this.temperatureService.getTodayData();
+    }
 }

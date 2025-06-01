@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { Temperature } from "./entities/temperature.entity";
 import { InjectRepository } from "@nestjs/typeorm";
-import { LessThan, Repository } from "typeorm";
+import { Between, LessThan, Repository } from 'typeorm';
 import { TemperatureResponseDto } from "./dto/temperature-response.dto";
 import { TemperatureCreateDto } from "./dto/temperature-create.dto";
 
@@ -71,5 +71,21 @@ export class TemperatureService {
     async getAmountOfEntry(): Promise<number> {
         return await this.temperatureRepository.count();
     }
+
+  async getTodayData(): Promise<TemperatureResponseDto[]> {
+      const now = new Date();
+
+      const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
+      const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
+
+      return this.temperatureRepository.find({
+          where: {
+              createdAt: Between(startOfDay, endOfDay),
+          },
+          order: {
+              createdAt: 'DESC',
+          },
+      });
+  }
 
 }
