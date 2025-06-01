@@ -17,7 +17,7 @@ export class TemperatureService {
         return await this.temperatureRepository.find({
             where: {},
             order: { createdAt: 'DESC' },
-            take: limit
+            take: limit || 300
         });
     }
 
