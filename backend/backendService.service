@@ -1,0 +1,33 @@
+# This is an example for the linux serivce to run this on a server
+[Unit]
+Description=Smarthome backend Service
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+# RuntimeMaxSec=2d
+
+# your user name
+User=nutzer
+
+# insert here the path to the backend project
+WorkingDirectory=/home/nutzer/SmartHomeBackend/hygrometerProjectSmarthome/backend
+
+# output file for logs
+StandardOutput=file:/home/nutzer/SmartHomeBackend/backend.log
+
+# get the latest version form the Repository
+ExecStartPre=git pull
+
+# install dependency
+ExecStartPre=npm install
+
+# build project for production
+ExecStartPre=npm run build
+
+# run in production mode
+ExecStart=npm run start:prod
+
+[Install]
+WantedBy=multi-user.target
