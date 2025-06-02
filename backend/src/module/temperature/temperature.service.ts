@@ -72,20 +72,34 @@ export class TemperatureService {
         return await this.temperatureRepository.count();
     }
 
-  async getTodayData(): Promise<TemperatureResponseDto[]> {
-      const now = new Date();
+    async getTodayData(): Promise<TemperatureResponseDto[]> {
+        const now = new Date();
 
-      const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
-      const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
+        const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
+        const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
 
-      return this.temperatureRepository.find({
-          where: {
-              createdAt: Between(startOfDay, endOfDay),
-          },
-          order: {
-              createdAt: 'DESC',
-          },
-      });
-  }
+        return this.temperatureRepository.find({
+            where: {
+                createdAt: Between(startOfDay, endOfDay),
+            },
+            order: {
+                createdAt: 'DESC',
+            },
+        });
+    }
 
+    async getLast24HourData(): Promise<TemperatureResponseDto[]> {
+        const endDate = new Date();
+        const startDate = new Date();
+        startDate.setDate(endDate.getDate() - 1);
+
+        return this.temperatureRepository.find({
+            where: {
+                createdAt: Between(startDate, endDate),
+            },
+            order: {
+                createdAt: 'DESC',
+            },
+        });
+    }
 }

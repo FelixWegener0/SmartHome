@@ -62,6 +62,12 @@ export class TemperatureController {
     @UseGuards(AuthGuard)
     @Get('/today')
     async getTodaysData() {
-       return await this.temperatureService.getTodayData();
+        return await this.temperatureService.getTodayData();
+    }
+
+    @UseGuards(AuthGuard)
+    @Get('/last24Hour')
+    async getLast24HourData() {
+        return await this.temperatureService.getLast24HourData();
     }
 }
