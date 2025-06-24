@@ -1,11 +1,11 @@
 import "./index.css";
+import './App.css'
 
 import {DataPlate} from "@/module/DataPlate/DataPlate";
 import {useEffect, useState} from "react";
 import {ApiResponseInterface, getLatestRoomData, getTodaysAllRoomsData} from "@/module/api";
 import Spinner from 'react-bootstrap/Spinner';
 
-import './App.css'
 import {CustomGraph} from "@/module/CustomGraph/CustomGraph";
 import {ControllPlate} from "@/module/ControllPannel/ControllPlate";
 import {Button} from "react-bootstrap";
@@ -14,6 +14,8 @@ const token = localStorage.getItem('BACKEND_TOKEN');
 
 export function App() {
     const rooms = ["wohnzimmer", "schlafzimmer", "badezimmer"]
+    const delayMinutes = 5;
+
     const [data, setData] = useState<ApiResponseInterface[]>();
     const [todaysData, setTodaysData] = useState<ApiResponseInterface[]>();
 
@@ -35,7 +37,12 @@ export function App() {
     useEffect(() => {
         fetchData();
         fetchTodaysData();
-    }, [])
+    }, []);
+
+    setTimeout(() => {
+        fetchData();
+        fetchTodaysData();
+    }, delayMinutes * 60 * 1000);
 
     if (!token) {
         return (
@@ -52,50 +59,48 @@ export function App() {
     }
 
     return (
-
-            <div className="app">
-                <div className="room-list">
-                    {data && data.length > 0 ? (
-                        data.map((data, index) => (
-                            <div key={data.room + index} className="room">
-                                <DataPlate
-                                    id={data.id}
-                                    room={data.room}
-                                    humidity={data.humidity}
-                                    temperature={data.temperature}
-                                    createdAt={data.createdAt}
-                                />
-                            </div>
-                        ))
-                    ) : (
-                        <Spinner animation="border" role="status">
-                            <span className="visually-hidden">Loading...</span>
-                        </Spinner>
-                    )}
-                    <ControllPlate
-                        reloadData={() => {
-                            console.log('Reloading data');
-                            fetchData();
-                            fetchTodaysData();
-                        }}
-                    />
-                </div>
-                <div>
-                    {todaysData ? (
-                        rooms.map((room, index) => (
-                            <CustomGraph
-                                key={room + index }
-                                data={todaysData.filter((value) => value.room === room)}
+        <div className="app">
+            <div className="room-list">
+                {data && data.length > 0 ? (
+                    data.map((data, index) => (
+                        <div key={data.room + index} className="room">
+                            <DataPlate
+                                id={data.id}
+                                room={data.room}
+                                humidity={data.humidity}
+                                temperature={data.temperature}
+                                createdAt={data.createdAt}
                             />
-                        ))
-                    ) : (
-                        <Spinner animation="border" role="status">
-                            <span className="visually-hidden">Loading...</span>
-                        </Spinner>
-                    )}
-                </div>
+                        </div>
+                    ))
+                ) : (
+                    <Spinner animation="border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                )}
+                <ControllPlate
+                    reloadData={() => {
+                        console.log('Reloading data');
+                        fetchData();
+                        fetchTodaysData();
+                    }}
+                />
             </div>
-
+            <div>
+                {todaysData ? (
+                    rooms.map((room, index) => (
+                        <CustomGraph
+                            key={room + index }
+                            data={todaysData.filter((value) => value.room === room)}
+                        />
+                    ))
+                ) : (
+                    <Spinner animation="border" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                )}
+            </div>
+        </div>
     );
 }
 
