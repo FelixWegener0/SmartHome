@@ -1,0 +1,12 @@
+.data-plate {
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 16px;
+    padding: 1rem;
+}
+
+.data-plate .card-title,
+.data-plate .card-text {
+    color: #1a1a1a;
+    text-align: left;
+}

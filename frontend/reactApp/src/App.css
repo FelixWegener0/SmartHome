@@ -1,0 +1,13 @@
+.room-list {
+    display: flex;
+    gap: 1rem;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+    .room-list {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
