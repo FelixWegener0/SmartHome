@@ -1,14 +1,13 @@
 import "./index.css";
 
-import {AppProvider} from "@/AppContext";
-import {DataPlate} from "@/module/DataPlate";
+import {DataPlate} from "@/module/DataPlate/DataPlate";
 import {useEffect, useState} from "react";
 import {ApiResponseInterface, getLatestRoomData, getTodaysAllRoomsData} from "@/module/api";
 import Spinner from 'react-bootstrap/Spinner';
 
 import './App.css'
-import {CustomGraph} from "@/module/CustomGraph";
-import {ControllPlate} from "@/module/ControllPlate";
+import {CustomGraph} from "@/module/CustomGraph/CustomGraph";
+import {ControllPlate} from "@/module/ControllPannel/ControllPlate";
 import {Button} from "react-bootstrap";
 
 const token = localStorage.getItem('BACKEND_TOKEN');
@@ -45,7 +44,7 @@ export function App() {
                 <Button onClick={() => {
                     const value = prompt("add token");
                     if (value) {
-                        localStorage.setItem("BACKEND_TOKEN", value)
+                        localStorage.setItem("BACKEND_TOKEN", value);
                     }
                 }}>Add token</Button>
             </div>
@@ -53,7 +52,7 @@ export function App() {
     }
 
     return (
-        <AppProvider>
+
             <div className="app">
                 <div className="room-list">
                     {data && data.length > 0 ? (
@@ -96,7 +95,7 @@ export function App() {
                     )}
                 </div>
             </div>
-        </AppProvider>
+
     );
 }
 
