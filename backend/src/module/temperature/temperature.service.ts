@@ -5,6 +5,13 @@ import { Between, LessThan, Repository } from 'typeorm';
 import { TemperatureResponseDto } from "./dto/temperature-response.dto";
 import { TemperatureCreateDto } from "./dto/temperature-create.dto";
 
+export interface ProcessedDataType {
+    room: string;
+    date: string;
+    averageTemperature: number;
+    averageHumidity: number;
+}
+
 @Injectable()
 export class TemperatureService {
     
@@ -102,4 +109,26 @@ export class TemperatureService {
             },
         });
     }
+
+    async calcDataFromLastMonth(): Promise<ProcessedDataType[]> {
+        const now = new Date();
+        const thirtyDaysAgo = new Date(now);
+        thirtyDaysAgo.setDate(now.getDate() - 30);
+
+        return await this.temperatureRepository.query(
+            `
+                SELECT
+                    room,
+                    TO_CHAR("createdAt"::date, 'YYYY-MM-DD') AS date,
+                ROUND(AVG(temperature)::numeric, 2) AS "averageTemperature",
+                ROUND(AVG(humidity)::numeric, 2) AS "averageHumidity"
+                FROM temperature
+                WHERE "createdAt" BETWEEN $1 AND $2
+                GROUP BY room, date
+                ORDER BY room, date;
+            `,
+            [thirtyDaysAgo.toISOString(), now.toISOString()]
+        );
+    }
+
 }

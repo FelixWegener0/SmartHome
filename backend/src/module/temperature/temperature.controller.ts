@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post, Request, UseGuards } from "@nestjs/common";
-import { TemperatureService } from "./temperature.service";
+import { ProcessedDataType, TemperatureService } from './temperature.service';
 import { TemperatureCreateDto } from "./dto/temperature-create.dto";
 import { AuthGuard } from "src/core/auth/auth.guard";
 import { NetworkGuard } from "src/core/auth/network.guard";
@@ -69,5 +69,11 @@ export class TemperatureController {
     @Get('/last24Hour')
     async getLast24HourData() {
         return await this.temperatureService.getLast24HourData();
+    }
+
+    @UseGuards(AuthGuard)
+    @Get('/avgLastMonth')
+    async getAvgLastMonth(): Promise<ProcessedDataType[]> {
+        return await this.temperatureService.calcDataFromLastMonth();
     }
 }
