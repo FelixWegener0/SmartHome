@@ -3,12 +3,19 @@ import './App.css'
 
 import {DataPlate} from "@/module/DataPlate/DataPlate";
 import {useEffect, useState} from "react";
-import {ApiResponseInterface, getLatestRoomData, getTodaysAllRoomsData} from "@/module/api";
+import {
+    ApiResponseInterface,
+    getLatestRoomData,
+    getLast24HoureAllRoomsData,
+    MonthDataAverageInterface,
+    getLast30DaysAverage
+} from "@/module/api";
 import Spinner from 'react-bootstrap/Spinner';
 
 import {CustomGraph} from "@/module/CustomGraph/CustomGraph";
 import {ControllPlate} from "@/module/ControllPannel/ControllPlate";
 import {Button} from "react-bootstrap";
+import {MonthData} from "@/module/MonthData/MonthData";
 
 const token = localStorage.getItem('BACKEND_TOKEN');
 
@@ -18,6 +25,7 @@ export function App() {
 
     const [data, setData] = useState<ApiResponseInterface[]>();
     const [todaysData, setTodaysData] = useState<ApiResponseInterface[]>();
+    const [monthAverageData, setMonthAverageData] = useState<MonthDataAverageInterface[] | undefined>(undefined);
 
     async function fetchData() {
         const promises = rooms.map(room => getLatestRoomData(room));
@@ -27,8 +35,12 @@ export function App() {
         }
     }
 
+    async function fetchMonthAverageData() {
+        setMonthAverageData(await getLast30DaysAverage())
+    }
+
     async function fetchTodaysData() {
-        const todaysResults = await getTodaysAllRoomsData();
+        const todaysResults = await getLast24HoureAllRoomsData();
         if (todaysResults) {
             setTodaysData(todaysResults);
         }
@@ -37,6 +49,7 @@ export function App() {
     useEffect(() => {
         fetchData();
         fetchTodaysData();
+        fetchMonthAverageData();
     }, []);
 
     setTimeout(() => {
@@ -100,6 +113,16 @@ export function App() {
                     </Spinner>
                 )}
             </div>
+            {monthAverageData ? (
+                <div>
+                    <MonthData monthAverageData={monthAverageData} useHumidity={false} />
+                    <MonthData monthAverageData={monthAverageData} useHumidity={true} />
+                </div>
+            ) : (
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            )}
         </div>
     );
 }
