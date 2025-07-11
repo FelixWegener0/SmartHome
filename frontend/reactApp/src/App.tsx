@@ -72,7 +72,7 @@ export function App() {
     }
 
     return (
-        <div className="app">
+        <div>
             <div className="room-list">
                 {data && data.length > 0 ? (
                     data.map((data, index) => (
@@ -99,31 +99,34 @@ export function App() {
                     }}
                 />
             </div>
-            <div>
-                {todaysData ? (
-                    rooms.map((room, index) => (
-                        <CustomGraph
-                            key={room + index }
-                            data={todaysData.filter((value) => value.room === room)}
-                        />
-                    ))
-                ) : (
-                    <Spinner animation="border" role="status">
-                        <span className="visually-hidden">Loading...</span>
-                    </Spinner>
-                )}
-            </div>
-            {monthAverageData ? (
-                <div>
-                    <MonthData monthAverageData={monthAverageData} useHumidity={false} />
-                    <MonthData monthAverageData={monthAverageData} useHumidity={true} />
+            <div className="container">
+                <div className="box">
+                    {todaysData ? (
+                        rooms.map((room, index) => (
+                            <CustomGraph
+                                key={room + index }
+                                data={todaysData.filter((value) => value.room === room)}
+                            />
+                        ))
+                    ) : (
+                        <Spinner animation="border" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </Spinner>
+                    )}
                 </div>
-            ) : (
-                <Spinner animation="border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </Spinner>
-            )}
-        </div>
+                    {monthAverageData ? (
+                        <div className="box">
+                            <MonthData monthAverageData={monthAverageData} useHumidity={false} />
+                            <MonthData monthAverageData={monthAverageData} useHumidity={true} />
+                        </div>
+                    ) : (
+                        <Spinner animation="border" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </Spinner>
+                    )}
+                </div>
+            </div>
+
     );
 }
 

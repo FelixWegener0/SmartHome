@@ -7,11 +7,13 @@ export function MonthData({ monthAverageData, useHumidity }: { monthAverageData:
 
     const chartData = transformToBarChartDataPerDay(monthAverageData, useHumidity);
 
+
     return (
         <div className="monthData-graph-container">
             <h2 className="titleText">{message(useHumidity)}</h2>
             <BarChart
                 xAxis={chartData.xAxis}
+                // @ts-ignore
                 series={chartData.series}
                 height={300}
             />
