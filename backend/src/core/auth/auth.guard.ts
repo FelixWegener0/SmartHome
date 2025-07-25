@@ -9,6 +9,10 @@ export class AuthGuard implements CanActivate {
         const request = context.switchToHttp().getRequest();
         const authHeader = request.headers;
 
+        if (authHeader.host !== process.env.ALLOW_ORIGIN) {
+            return false;
+        }
+
         if (authHeader.token === process.env.BACKEND_TOKEN) {
             return true;
         } else {
