@@ -49,7 +49,7 @@ export class TemperatureController {
     @UseGuards(AuthGuard)
     @Get('/removeAll')
     async removeAll() {
-        this.temperatureService.removeAll();
+        await this.temperatureService.removeAll();
         return null;
     }
 
