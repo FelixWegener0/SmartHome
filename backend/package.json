@@ -1,13 +1,14 @@
 {
   "name": "hygrometer-project-backend",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "",
-  "author": "",
+  "author": "Felix Wegener",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "Copyright © 2025 Felix Wegener. This code may only be used for personal, non-commercial purposes. Any commercial use is prohibited.",
   "scripts": {
     "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "prettier:write": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "prettier:check": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
