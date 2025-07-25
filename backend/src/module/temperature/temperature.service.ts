@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { Temperature } from "./entities/temperature.entity";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Between, LessThan, Repository } from 'typeorm';
+import { Between, LessThan, Repository } from "typeorm";
 import { TemperatureResponseDto } from "./dto/temperature-response.dto";
 import { TemperatureCreateDto } from "./dto/temperature-create.dto";
 
@@ -14,7 +14,6 @@ export interface ProcessedDataType {
 
 @Injectable()
 export class TemperatureService {
-    
     constructor(
         @InjectRepository(Temperature)
         private temperatureRepository: Repository<Temperature>,
@@ -23,42 +22,52 @@ export class TemperatureService {
     async findAll(limit?: number): Promise<TemperatureResponseDto[]> {
         return await this.temperatureRepository.find({
             where: {},
-            order: { createdAt: 'DESC' },
-            take: limit || 1000
+            order: { createdAt: "DESC" },
+            take: limit || 1000,
         });
     }
 
-    async create(createDto: TemperatureCreateDto): Promise<TemperatureResponseDto> {
-        const newTemperatureData = this.temperatureRepository.create({...createDto, createdAt: new Date()});
+    async create(
+        createDto: TemperatureCreateDto,
+    ): Promise<TemperatureResponseDto> {
+        const newTemperatureData = this.temperatureRepository.create({
+            ...createDto,
+            createdAt: new Date(),
+        });
         return await this.temperatureRepository.save(newTemperatureData);
     }
 
     async findLatest(): Promise<TemperatureResponseDto | null> {
         return await this.temperatureRepository.findOne({
             where: {},
-            order: { createdAt: 'DESC' }
+            order: { createdAt: "DESC" },
         });
     }
 
-    async findAllbyRoom(room: string, limit?: number): Promise<TemperatureResponseDto[] | null> {
+    async findAllbyRoom(
+        room: string,
+        limit?: number,
+    ): Promise<TemperatureResponseDto[] | null> {
         return await this.temperatureRepository.find({
             where: { room: room },
-            order: { createdAt: 'DESC' },
-            take: limit
+            order: { createdAt: "DESC" },
+            take: limit,
         });
     }
 
-    async findLatestByRoom(room: string): Promise<TemperatureResponseDto | null> {
+    async findLatestByRoom(
+        room: string,
+    ): Promise<TemperatureResponseDto | null> {
         return await this.temperatureRepository.findOne({
             where: { room: room },
-            order: { createdAt: 'DESC' }
+            order: { createdAt: "DESC" },
         });
     }
 
     async removeOne(id: string): Promise<void> {
         await this.temperatureRepository.delete(id);
     }
-    
+
     async removeAll(): Promise<void> {
         const result = await this.temperatureRepository.find();
 
@@ -69,7 +78,7 @@ export class TemperatureService {
 
     async removeByDate() {
         const cutoffDate = new Date(Date.now() - 24 * 60 * 60 * 1000);
-    
+
         await this.temperatureRepository.delete({
             createdAt: LessThan(cutoffDate),
         });
@@ -82,15 +91,30 @@ export class TemperatureService {
     async getTodayData(): Promise<TemperatureResponseDto[]> {
         const now = new Date();
 
-        const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
-        const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
+        const startOfDay = new Date(
+            now.getFullYear(),
+            now.getMonth(),
+            now.getDate(),
+            0,
+            0,
+            0,
+        );
+        const endOfDay = new Date(
+            now.getFullYear(),
+            now.getMonth(),
+            now.getDate(),
+            23,
+            59,
+            59,
+            999,
+        );
 
         return this.temperatureRepository.find({
             where: {
                 createdAt: Between(startOfDay, endOfDay),
             },
             order: {
-                createdAt: 'DESC',
+                createdAt: "DESC",
             },
         });
     }
@@ -105,7 +129,7 @@ export class TemperatureService {
                 createdAt: Between(startDate, endDate),
             },
             order: {
-                createdAt: 'DESC',
+                createdAt: "DESC",
             },
         });
     }
@@ -127,8 +151,7 @@ export class TemperatureService {
                 GROUP BY room, date
                 ORDER BY room, date;
             `,
-            [thirtyDaysAgo.toISOString(), now.toISOString()]
+            [thirtyDaysAgo.toISOString(), now.toISOString()],
         );
     }
-
 }

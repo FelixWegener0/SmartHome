@@ -3,24 +3,26 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./entities/user.entity";
 import { Repository } from "typeorm";
 import { UserCreateDto } from "./dto/user-create.dto";
-import { v4 as uuid } from 'uuid';
+import { v4 as uuid } from "uuid";
 
 @Injectable()
 export class UserService {
-
     constructor(
         @InjectRepository(User)
         private userRepository: Repository<User>,
     ) {}
 
     async create(createDto: UserCreateDto): Promise<string> {
-        const newUser = this.userRepository.create({...createDto, token: uuid()});
+        const newUser = this.userRepository.create({
+            ...createDto,
+            token: uuid(),
+        });
         return (await this.userRepository.save(newUser)).token;
     }
 
     async getToken(name: string, password: string): Promise<string | null> {
-        const user = await  this.userRepository.findOne({
-            where: { name: name }
+        const user = await this.userRepository.findOne({
+            where: { name: name },
         });
 
         if (user?.password === password) {
@@ -38,5 +40,4 @@ export class UserService {
         });
         return false;
     }
-
 }
