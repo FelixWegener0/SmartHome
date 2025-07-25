@@ -3,5 +3,11 @@
   "trailingComma": "all",
   "tabWidth": 4,
   "useTabs": false,
-  "semi": true
+  "semi": true,
+  "printWidth": 100,
+  "arrowParens": "always",
+  "bracketSpacing": true,
+  "endOfLine": "lf",
+  "proseWrap": "preserve",
+  "embeddedLanguageFormatting": "auto"
 }

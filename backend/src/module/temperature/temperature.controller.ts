@@ -1,11 +1,4 @@
-import {
-    Body,
-    Controller,
-    Get,
-    Post,
-    Request,
-    UseGuards,
-} from "@nestjs/common";
+import { Body, Controller, Get, Post, Request, UseGuards } from "@nestjs/common";
 import { ProcessedDataType, TemperatureService } from "./temperature.service";
 import { TemperatureCreateDto } from "./dto/temperature-create.dto";
 import { AuthGuard } from "src/core/auth/auth.guard";
@@ -30,10 +23,7 @@ export class TemperatureController {
     @UseGuards(AuthGuard)
     @Post("/findByRoomAll")
     async findByRoomAll(@Body() body) {
-        return await this.temperatureService.findAllbyRoom(
-            body.room,
-            body.limit,
-        );
+        return await this.temperatureService.findAllbyRoom(body.room, body.limit);
     }
 
     @UseGuards(AuthGuard)

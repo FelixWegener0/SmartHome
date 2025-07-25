@@ -27,9 +27,7 @@ export class TemperatureService {
         });
     }
 
-    async create(
-        createDto: TemperatureCreateDto,
-    ): Promise<TemperatureResponseDto> {
+    async create(createDto: TemperatureCreateDto): Promise<TemperatureResponseDto> {
         const newTemperatureData = this.temperatureRepository.create({
             ...createDto,
             createdAt: new Date(),
@@ -44,10 +42,7 @@ export class TemperatureService {
         });
     }
 
-    async findAllbyRoom(
-        room: string,
-        limit?: number,
-    ): Promise<TemperatureResponseDto[] | null> {
+    async findAllbyRoom(room: string, limit?: number): Promise<TemperatureResponseDto[] | null> {
         return await this.temperatureRepository.find({
             where: { room: room },
             order: { createdAt: "DESC" },
@@ -55,9 +50,7 @@ export class TemperatureService {
         });
     }
 
-    async findLatestByRoom(
-        room: string,
-    ): Promise<TemperatureResponseDto | null> {
+    async findLatestByRoom(room: string): Promise<TemperatureResponseDto | null> {
         return await this.temperatureRepository.findOne({
             where: { room: room },
             order: { createdAt: "DESC" },
@@ -91,14 +84,7 @@ export class TemperatureService {
     async getTodayData(): Promise<TemperatureResponseDto[]> {
         const now = new Date();
 
-        const startOfDay = new Date(
-            now.getFullYear(),
-            now.getMonth(),
-            now.getDate(),
-            0,
-            0,
-            0,
-        );
+        const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
         const endOfDay = new Date(
             now.getFullYear(),
             now.getMonth(),
