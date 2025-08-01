@@ -1,5 +1,5 @@
 {
-  "singleQuote": false,
+  "singleQuote": true,
   "trailingComma": "all",
   "tabWidth": 4,
   "useTabs": false,
@@ -7,7 +7,6 @@
   "printWidth": 100,
   "arrowParens": "always",
   "bracketSpacing": true,
-  "endOfLine": "lf",
   "proseWrap": "preserve",
   "embeddedLanguageFormatting": "auto"
 }

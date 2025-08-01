@@ -1,6 +1,6 @@
-import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
-import { Observable } from "rxjs";
-import { formatDate, getClientIp } from "./shared.functions";
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { formatDate, getClientIp } from './shared.functions';
 
 @Injectable()
 export class AuthGuard implements CanActivate {

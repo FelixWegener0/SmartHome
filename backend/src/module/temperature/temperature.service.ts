@@ -1,9 +1,9 @@
-import { Injectable } from "@nestjs/common";
-import { Temperature } from "./entities/temperature.entity";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Between, LessThan, Repository } from "typeorm";
-import { TemperatureResponseDto } from "./dto/temperature-response.dto";
-import { TemperatureCreateDto } from "./dto/temperature-create.dto";
+import { Injectable } from '@nestjs/common';
+import { Temperature } from './entities/temperature.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Between, LessThan, Repository } from 'typeorm';
+import { TemperatureResponseDto } from './dto/temperature-response.dto';
+import { TemperatureCreateDto } from './dto/temperature-create.dto';
 
 export interface ProcessedDataType {
     room: string;
@@ -22,7 +22,7 @@ export class TemperatureService {
     async findAll(limit?: number): Promise<TemperatureResponseDto[]> {
         return await this.temperatureRepository.find({
             where: {},
-            order: { createdAt: "DESC" },
+            order: { createdAt: 'DESC' },
             take: limit || 1000,
         });
     }
@@ -38,14 +38,14 @@ export class TemperatureService {
     async findLatest(): Promise<TemperatureResponseDto | null> {
         return await this.temperatureRepository.findOne({
             where: {},
-            order: { createdAt: "DESC" },
+            order: { createdAt: 'DESC' },
         });
     }
 
     async findAllbyRoom(room: string, limit?: number): Promise<TemperatureResponseDto[] | null> {
         return await this.temperatureRepository.find({
             where: { room: room },
-            order: { createdAt: "DESC" },
+            order: { createdAt: 'DESC' },
             take: limit,
         });
     }
@@ -53,7 +53,7 @@ export class TemperatureService {
     async findLatestByRoom(room: string): Promise<TemperatureResponseDto | null> {
         return await this.temperatureRepository.findOne({
             where: { room: room },
-            order: { createdAt: "DESC" },
+            order: { createdAt: 'DESC' },
         });
     }
 
@@ -100,7 +100,7 @@ export class TemperatureService {
                 createdAt: Between(startOfDay, endOfDay),
             },
             order: {
-                createdAt: "DESC",
+                createdAt: 'DESC',
             },
         });
     }
@@ -115,7 +115,7 @@ export class TemperatureService {
                 createdAt: Between(startDate, endDate),
             },
             order: {
-                createdAt: "DESC",
+                createdAt: 'DESC',
             },
         });
     }
