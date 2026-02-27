@@ -28,6 +28,8 @@
     "@nestjs/schedule": "^5.0.1",
     "@nestjs/typeorm": "^11.0.0",
     "dotenv": "^16.4.7",
+    "express-session": "^1.18.2",
+    "keycloak-connect": "^26.1.1",
     "pg": "^8.14.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",

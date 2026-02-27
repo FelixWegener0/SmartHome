@@ -5,9 +5,9 @@
 #include <ArduinoJson.h>
 #include <WiFiClientSecure.h>
 
-const char *ssid = "";
-const char *password = "";
-const char *serverIp = "";
+const char *ssid = "Vodafone-2A54";
+const char *password = "81800TAXfelix*198";
+const char *serverIp = "https://felixwegener.dev/api/temp";
 
 WiFiClientSecure client;
 
@@ -58,7 +58,7 @@ void sendPostRequest(float temperature, float humidity)
 
   http.addHeader("Content-Type", "application/json");
 
-  String room = "badezimmer";
+  String room = "wohnzimmer";
   String postData = "{\"room\":\"" + room + "\",\"humidity\":" + String(humidity, 2) + ",\"temperature\":" + String(temperature, 2) + "}";
 
   Serial.println("Sende POST-Request: " + postData);

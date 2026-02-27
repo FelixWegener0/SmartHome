@@ -2,6 +2,7 @@ version: "3.7"
 
 services:
   postgres:
+    container_name: backend_database
     image: postgres:15
     environment:
       POSTGRES_USER: user
@@ -11,6 +12,40 @@ services:
       - pgdata:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    restart: always
+
+  keycloak-db:
+    container_name: keycloak_database
+    image: postgres:15
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: keycloak_password
+    volumes:
+      - keycloak_pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0.5
+    command: start
+    environment:
+      KC_DB: postgres
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: keycloak_password
+      KC_DB_URL_HOST: keycloak-db
+      KC_DB_URL_DATABASE: keycloak
+
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin_password
+    ports:
+      - "8080:8080"
+    depends_on:
+      - keycloak-db
+    volumes:
+      - keycloak_data:/opt/keycloak/data
+    restart: unless-stopped
 
 volumes:
   pgdata:
+  keycloak_pgdata:
+  keycloak_data:

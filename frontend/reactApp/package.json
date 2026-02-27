@@ -18,7 +18,8 @@
     "bootstrap": "^5.3.7",
     "react": "^19",
     "react-bootstrap": "^2.10.10",
-    "react-dom": "^19"
+    "react-dom": "^19",
+    "@react-buddy/ide-toolbox": "^2.4.0"
   },
   "devDependencies": {
     "@types/bun": "latest",
